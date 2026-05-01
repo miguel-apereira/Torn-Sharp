@@ -18,12 +18,19 @@ namespace TornSharp.Forms {
 
         internal async void GetBasicInfo() {
             ApiUserBasic userBasicInfo = await API.User.GetUserBasic();
+            ApiUserBars userBars = await API.User.GetUserBars();
 
             labelPlayerID.Text = userBasicInfo.ID.ToString();
             labelPlayerName.Text = userBasicInfo.Name;
             labelPlayerLevel.Text = userBasicInfo.Level.ToString();
             labelPlayerGender.Text = userBasicInfo.Gender;
             labelPlayerStatus.Text = userBasicInfo.Status.Description;
+
+            energyBar.Value = (int)((userBars.Energy.Current * 100) / userBars.Energy.Maximum);
+            nerveBar.Value = (int)((userBars.Nerve.Current * 100) / userBars.Nerve.Maximum);
+            happyBar.Value = (int)((userBars.Happy.Current * 100) / userBars.Happy.Maximum);
+            lifeBar.Value = (int)((userBars.Life.Current * 100) / userBars.Life.Maximum);
+
         }
 
         private async void MainWindow_Load(object sender, EventArgs e) {

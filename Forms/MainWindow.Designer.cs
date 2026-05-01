@@ -25,7 +25,15 @@
         private void InitializeComponent() {
             labelPlayerName = new Label();
             groupBox1 = new GroupBox();
+            lifeBar = new TornSharp.CustomControls.ProfileBar();
+            label9 = new Label();
+            happyBar = new TornSharp.CustomControls.ProfileBar();
+            label8 = new Label();
+            nerveBar = new TornSharp.CustomControls.ProfileBar();
+            label7 = new Label();
+            energyBar = new TornSharp.CustomControls.ProfileBar();
             labelPlayerStatus = new Label();
+            label6 = new Label();
             label5 = new Label();
             labelPlayerGender = new Label();
             label4 = new Label();
@@ -50,7 +58,15 @@
             // groupBox1
             // 
             groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox1.Controls.Add(lifeBar);
+            groupBox1.Controls.Add(label9);
+            groupBox1.Controls.Add(happyBar);
+            groupBox1.Controls.Add(label8);
+            groupBox1.Controls.Add(nerveBar);
+            groupBox1.Controls.Add(label7);
+            groupBox1.Controls.Add(energyBar);
             groupBox1.Controls.Add(labelPlayerStatus);
+            groupBox1.Controls.Add(label6);
             groupBox1.Controls.Add(label5);
             groupBox1.Controls.Add(labelPlayerGender);
             groupBox1.Controls.Add(label4);
@@ -64,10 +80,95 @@
             groupBox1.Margin = new Padding(2, 3, 2, 3);
             groupBox1.Name = "groupBox1";
             groupBox1.Padding = new Padding(2, 3, 2, 3);
-            groupBox1.Size = new Size(978, 117);
+            groupBox1.Size = new Size(1080, 188);
             groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
             groupBox1.Text = "Player Profile";
+            // 
+            // lifeBar
+            // 
+            lifeBar.BackColor = SystemColors.ControlLight;
+            lifeBar.Location = new Point(577, 49);
+            lifeBar.Maximum = 100;
+            lifeBar.Minimum = 0;
+            lifeBar.Name = "lifeBar";
+            lifeBar.ProgressBarColor = Color.CornflowerBlue;
+            lifeBar.Size = new Size(120, 19);
+            lifeBar.TabIndex = 17;
+            lifeBar.Text = "Energy";
+            lifeBar.Value = 0;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
+            label9.Location = new Point(541, 48);
+            label9.Margin = new Padding(2, 0, 2, 0);
+            label9.Name = "label9";
+            label9.Size = new Size(31, 17);
+            label9.TabIndex = 16;
+            label9.Text = "Life:";
+            // 
+            // happyBar
+            // 
+            happyBar.BackColor = SystemColors.ControlLight;
+            happyBar.Location = new Point(416, 49);
+            happyBar.Maximum = 100;
+            happyBar.Minimum = 0;
+            happyBar.Name = "happyBar";
+            happyBar.ProgressBarColor = Color.Gold;
+            happyBar.Size = new Size(120, 19);
+            happyBar.TabIndex = 15;
+            happyBar.Text = "Energy";
+            happyBar.Value = 0;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
+            label8.Location = new Point(360, 48);
+            label8.Margin = new Padding(2, 0, 2, 0);
+            label8.Name = "label8";
+            label8.Size = new Size(51, 17);
+            label8.TabIndex = 14;
+            label8.Text = "Happy:";
+            // 
+            // nerveBar
+            // 
+            nerveBar.BackColor = SystemColors.ControlLight;
+            nerveBar.Location = new Point(235, 49);
+            nerveBar.Maximum = 100;
+            nerveBar.Minimum = 0;
+            nerveBar.Name = "nerveBar";
+            nerveBar.ProgressBarColor = Color.Tomato;
+            nerveBar.Size = new Size(120, 19);
+            nerveBar.TabIndex = 13;
+            nerveBar.Text = "Energy";
+            nerveBar.Value = 0;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
+            label7.Location = new Point(186, 48);
+            label7.Margin = new Padding(2, 0, 2, 0);
+            label7.Name = "label7";
+            label7.Size = new Size(48, 17);
+            label7.TabIndex = 12;
+            label7.Text = "Nerve:";
+            // 
+            // energyBar
+            // 
+            energyBar.BackColor = SystemColors.ControlLight;
+            energyBar.Location = new Point(61, 49);
+            energyBar.Maximum = 100;
+            energyBar.Minimum = 0;
+            energyBar.Name = "energyBar";
+            energyBar.ProgressBarColor = Color.LimeGreen;
+            energyBar.Size = new Size(120, 19);
+            energyBar.TabIndex = 2;
+            energyBar.Text = "Energy";
+            energyBar.Value = 0;
             // 
             // labelPlayerStatus
             // 
@@ -78,6 +179,17 @@
             labelPlayerStatus.Size = new Size(62, 17);
             labelPlayerStatus.TabIndex = 10;
             labelPlayerStatus.Text = "ABCDEFG";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
+            label6.Location = new Point(4, 48);
+            label6.Margin = new Padding(2, 0, 2, 0);
+            label6.Name = "label6";
+            label6.Size = new Size(53, 17);
+            label6.TabIndex = 11;
+            label6.Text = "Energy:";
             // 
             // label5
             // 
@@ -168,7 +280,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(999, 563);
+            ClientSize = new Size(1101, 640);
             Controls.Add(groupBox1);
             Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Margin = new Padding(2, 3, 2, 3);
@@ -195,5 +307,13 @@
         private Label label4;
         private Label labelPlayerStatus;
         private Label label5;
+        private Label label6;
+        private CustomControls.ProfileBar energyBar;
+        private CustomControls.ProfileBar nerveBar;
+        private Label label7;
+        private CustomControls.ProfileBar happyBar;
+        private Label label8;
+        private CustomControls.ProfileBar lifeBar;
+        private Label label9;
     }
 }
