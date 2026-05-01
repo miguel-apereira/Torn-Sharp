@@ -58,7 +58,7 @@ namespace TornSharp {
         }
 
         private async void CheckAPIKey() {
-            var UserBasicInfo = await API.User.GetBasicInfo();
+            var UserBasicInfo = await API.User.GetUserBasic();
 
             if (UserBasicInfo == null) {
                 TornSharpError.ThrowError("Invalid API key. Please check your API key and try again.");
@@ -68,9 +68,9 @@ namespace TornSharp {
                 AppSettings.SaveSettings();
             }
             else {
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
+                new MainWindow().Show();
                 this.Hide();
+
             }
         }
     }

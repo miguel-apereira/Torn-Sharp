@@ -16,12 +16,24 @@ namespace TornSharp.Forms {
             InitializeComponent();
         }
 
-        private void MainWindow_Load(object sender, EventArgs e) {
+        internal async void GetBasicInfo() {
+            ApiUserBasic userBasicInfo = await API.User.GetUserBasic();
+
+            labelPlayerID.Text = userBasicInfo.ID.ToString();
+            labelPlayerName.Text = userBasicInfo.Name;
+            labelPlayerLevel.Text = userBasicInfo.Level.ToString();
+            labelPlayerGender.Text = userBasicInfo.Gender;
+            labelPlayerStatus.Text = userBasicInfo.Status.Description;
+        }
+
+        private async void MainWindow_Load(object sender, EventArgs e) {
             this.Text = "TornSharp Overview - " + ProductVersion;
+            GetBasicInfo();
         }
 
         private void MainWindow_FormClosed(object sender, FormClosedEventArgs e) {
             Application.Exit();
         }
+
     }
 }

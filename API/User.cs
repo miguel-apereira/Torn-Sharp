@@ -17,14 +17,14 @@ namespace TornSharp.API {
         // Create our http client to send requests to the API
         private static readonly HttpClient client = new HttpClient();
 
-        internal static async Task<UserBasic?> GetBasicInfo() {
+        internal static async Task<ApiUserBasic?> GetUserBasic() {
             try {
                 HttpResponseMessage response = await client.GetAsync($"https://api.torn.com/v2/user/basic?striptags=false&comment=TornSharp&key={UserSettings.Default.ApiKey}");
                 response.EnsureSuccessStatusCode();
 
                 string responseString = await response.Content.ReadAsStringAsync();
                 JObject responseJson = JObject.Parse(responseString);
-                return responseJson["profile"]?.ToObject<UserBasic>();
+                return responseJson["profile"]?.ToObject<ApiUserBasic>();
             }
             catch (Exception ex) {
                 MessageBox.Show("Error: " + ex.Message, "TornSharp Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

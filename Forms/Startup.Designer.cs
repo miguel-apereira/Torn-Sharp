@@ -27,12 +27,14 @@
         ///  the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            components = new System.ComponentModel.Container();
             groupBox1 = new GroupBox();
             checkBox1 = new CheckBox();
             button1 = new Button();
             textBox1 = new TextBox();
             linkLabel1 = new LinkLabel();
             label1 = new Label();
+            toolTip1 = new ToolTip(components);
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -61,6 +63,7 @@
             checkBox1.Size = new Size(91, 19);
             checkBox1.TabIndex = 4;
             checkBox1.Text = "Auto Sign in";
+            toolTip1.SetToolTip(checkBox1, "Sign in automatically");
             checkBox1.UseVisualStyleBackColor = true;
             checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             // 
@@ -71,6 +74,7 @@
             button1.Size = new Size(189, 54);
             button1.TabIndex = 3;
             button1.Text = "Save";
+            toolTip1.SetToolTip(button1, "Sign in using your API key");
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
@@ -92,6 +96,7 @@
             linkLabel1.TabIndex = 1;
             linkLabel1.TabStop = true;
             linkLabel1.Text = "Click here to configure your API Key";
+            toolTip1.SetToolTip(linkLabel1, "Open url in browser");
             linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
             // label1
@@ -115,7 +120,7 @@
             MaximizeBox = false;
             Name = "Startup";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Startup - TORN Sharp";
+            Text = "Startup - TornSharp";
             Load += Startup_Load;
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
@@ -130,5 +135,6 @@
         private TextBox textBox1;
         private Button button1;
         private CheckBox checkBox1;
+        private ToolTip toolTip1;
     }
 }
