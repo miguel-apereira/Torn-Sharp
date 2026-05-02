@@ -9,8 +9,8 @@ namespace TornSharp.Classes {
         internal int? ReceiveIncrementInSeconds { get; set; }
         internal int? FullAtSeconds { get; set; }
     }
-    internal class EnergyBar : PlayerBar { }
-    internal class NerveBar : PlayerBar { }
-    internal class HappyBar : PlayerBar { }
-    internal class LifeBar : PlayerBar { }
+    internal class EnergyBar : PlayerBar { internal string Type { get; } = "Energy"; }
+    internal class NerveBar : PlayerBar { internal string Type { get; } = "Nerve"; }
+    internal class HappyBar : PlayerBar { internal string Type { get; } = "Happy"; }
+    internal class LifeBar : PlayerBar { internal string Type { get; } = "Life"; }
 }

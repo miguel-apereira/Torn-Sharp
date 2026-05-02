@@ -26,6 +26,9 @@
             components = new System.ComponentModel.Container();
             labelPlayerName = new Label();
             groupBox1 = new GroupBox();
+            labelReceiveLifeIn = new Label();
+            labelReceiveHappyIn = new Label();
+            labelReceiveNerveIn = new Label();
             labelReceiveEnergyIn = new Label();
             labelPlayerWallet = new Label();
             label11 = new Label();
@@ -84,15 +87,18 @@
             menuStrip1 = new MenuStrip();
             overviewToolStripMenuItem = new ToolStripMenuItem();
             refreshDataToolStripMenuItem = new ToolStripMenuItem();
+            playerToolStripMenuItem = new ToolStripMenuItem();
+            configuToolStripMenuItem = new ToolStripMenuItem();
             timerInvestmentTimeRemaining = new System.Windows.Forms.Timer(components);
             toolTip1 = new ToolTip(components);
             timerServerTime = new System.Windows.Forms.Timer(components);
             statusStrip1 = new StatusStrip();
             statusBarServerTime = new ToolStripStatusLabel();
+            toolStripStatusLabel2 = new ToolStripStatusLabel();
+            statusBarApiCallsPerMinute = new ToolStripStatusLabel();
             timerUpdatePlayerBars = new System.Windows.Forms.Timer(components);
-            labelReceiveNerveIn = new Label();
-            labelReceiveHappyIn = new Label();
-            labelReceiveLifeIn = new Label();
+            timerApiCallsPerMinute = new System.Windows.Forms.Timer(components);
+            timerRefreshData = new System.Windows.Forms.Timer(components);
             groupBox1.SuspendLayout();
             tabControl1.SuspendLayout();
             financialTab.SuspendLayout();
@@ -158,6 +164,33 @@
             groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
             groupBox1.Text = "Player Profile";
+            // 
+            // labelReceiveLifeIn
+            // 
+            labelReceiveLifeIn.AutoSize = true;
+            labelReceiveLifeIn.Location = new Point(675, 71);
+            labelReceiveLifeIn.Name = "labelReceiveLifeIn";
+            labelReceiveLifeIn.Size = new Size(39, 17);
+            labelReceiveLifeIn.TabIndex = 29;
+            labelReceiveLifeIn.Text = "00:00";
+            // 
+            // labelReceiveHappyIn
+            // 
+            labelReceiveHappyIn.AutoSize = true;
+            labelReceiveHappyIn.Location = new Point(497, 71);
+            labelReceiveHappyIn.Name = "labelReceiveHappyIn";
+            labelReceiveHappyIn.Size = new Size(39, 17);
+            labelReceiveHappyIn.TabIndex = 28;
+            labelReceiveHappyIn.Text = "00:00";
+            // 
+            // labelReceiveNerveIn
+            // 
+            labelReceiveNerveIn.AutoSize = true;
+            labelReceiveNerveIn.Location = new Point(316, 71);
+            labelReceiveNerveIn.Name = "labelReceiveNerveIn";
+            labelReceiveNerveIn.Size = new Size(39, 17);
+            labelReceiveNerveIn.TabIndex = 27;
+            labelReceiveNerveIn.Text = "00:00";
             // 
             // labelReceiveEnergyIn
             // 
@@ -788,7 +821,7 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { overviewToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { overviewToolStripMenuItem, playerToolStripMenuItem, configuToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1101, 24);
@@ -810,6 +843,18 @@
             refreshDataToolStripMenuItem.Text = "Refresh Data";
             refreshDataToolStripMenuItem.Click += refreshDataToolStripMenuItem_Click;
             // 
+            // playerToolStripMenuItem
+            // 
+            playerToolStripMenuItem.Name = "playerToolStripMenuItem";
+            playerToolStripMenuItem.Size = new Size(51, 20);
+            playerToolStripMenuItem.Text = "Player";
+            // 
+            // configuToolStripMenuItem
+            // 
+            configuToolStripMenuItem.Name = "configuToolStripMenuItem";
+            configuToolStripMenuItem.Size = new Size(61, 20);
+            configuToolStripMenuItem.Text = "Options";
+            // 
             // timerInvestmentTimeRemaining
             // 
             timerInvestmentTimeRemaining.Interval = 1000;
@@ -822,7 +867,7 @@
             // 
             // statusStrip1
             // 
-            statusStrip1.Items.AddRange(new ToolStripItem[] { statusBarServerTime });
+            statusStrip1.Items.AddRange(new ToolStripItem[] { statusBarServerTime, toolStripStatusLabel2, statusBarApiCallsPerMinute });
             statusStrip1.Location = new Point(0, 681);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(1101, 22);
@@ -835,37 +880,32 @@
             statusBarServerTime.Size = new Size(69, 17);
             statusBarServerTime.Text = "Server Time";
             // 
+            // toolStripStatusLabel2
+            // 
+            toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            toolStripStatusLabel2.Size = new Size(10, 17);
+            toolStripStatusLabel2.Text = "|";
+            // 
+            // statusBarApiCallsPerMinute
+            // 
+            statusBarApiCallsPerMinute.Name = "statusBarApiCallsPerMinute";
+            statusBarApiCallsPerMinute.Size = new Size(149, 17);
+            statusBarApiCallsPerMinute.Text = "API Calls Per Minute: 0/100";
+            // 
             // timerUpdatePlayerBars
             // 
             timerUpdatePlayerBars.Interval = 1000;
             timerUpdatePlayerBars.Tick += timerUpdatePlayerBars_Tick;
             // 
-            // labelReceiveNerveIn
+            // timerApiCallsPerMinute
             // 
-            labelReceiveNerveIn.AutoSize = true;
-            labelReceiveNerveIn.Location = new Point(316, 71);
-            labelReceiveNerveIn.Name = "labelReceiveNerveIn";
-            labelReceiveNerveIn.Size = new Size(39, 17);
-            labelReceiveNerveIn.TabIndex = 27;
-            labelReceiveNerveIn.Text = "00:00";
+            timerApiCallsPerMinute.Interval = 60000;
+            timerApiCallsPerMinute.Tick += timerApiCallsPerMinute_Tick;
             // 
-            // labelReceiveHappyIn
+            // timerRefreshData
             // 
-            labelReceiveHappyIn.AutoSize = true;
-            labelReceiveHappyIn.Location = new Point(497, 71);
-            labelReceiveHappyIn.Name = "labelReceiveHappyIn";
-            labelReceiveHappyIn.Size = new Size(39, 17);
-            labelReceiveHappyIn.TabIndex = 28;
-            labelReceiveHappyIn.Text = "00:00";
-            // 
-            // labelReceiveLifeIn
-            // 
-            labelReceiveLifeIn.AutoSize = true;
-            labelReceiveLifeIn.Location = new Point(675, 71);
-            labelReceiveLifeIn.Name = "labelReceiveLifeIn";
-            labelReceiveLifeIn.Size = new Size(39, 17);
-            labelReceiveLifeIn.TabIndex = 29;
-            labelReceiveLifeIn.Text = "00:00";
+            timerRefreshData.Interval = 3000;
+            timerRefreshData.Tick += timerRefreshData_Tick;
             // 
             // MainWindow
             // 
@@ -983,5 +1023,11 @@
         private Label labelReceiveNerveIn;
         private Label labelReceiveLifeIn;
         private Label labelReceiveHappyIn;
+        private ToolStripMenuItem playerToolStripMenuItem;
+        private ToolStripMenuItem configuToolStripMenuItem;
+        private ToolStripStatusLabel statusBarApiCallsPerMinute;
+        private ToolStripStatusLabel toolStripStatusLabel2;
+        private System.Windows.Forms.Timer timerApiCallsPerMinute;
+        private System.Windows.Forms.Timer timerRefreshData;
     }
 }

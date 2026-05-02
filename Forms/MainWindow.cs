@@ -5,9 +5,13 @@ using System.Globalization;
 using TornSharp.API.Classes;
 using TornSharp.Classes;
 using TornSharp.Functions;
+using TornSharp.Extensions;
 
 namespace TornSharp.Forms {
     public partial class MainWindow : Form {
+
+        static int ApiCallsThisMinute = 0;
+
         static ServerInfo serverInfo = new ServerInfo();
 
         static PlayerInfo playerInfo = new PlayerInfo();
@@ -21,9 +25,22 @@ namespace TornSharp.Forms {
             InitializeComponent();
         }
 
+        internal void UpdateApiCallsPerMinute() {
+            ApiCallsThisMinute++;
+            statusBarApiCallsPerMinute.Text = $"API Calls Per Minute: {ApiCallsThisMinute}/100";
+        }
+
+        internal async Task OneTimeApiCalls() {
+            ApiTornTimestamp serverTimestamp = await API.Torn.GetTornTimestamp();
+            UpdateApiCallsPerMinute();
+
+            serverInfo.Timestamp = serverTimestamp?.Timestamp;
+        }
+
         internal async Task GetBasicInfo() {
 
             ApiUserBasic userBasicInfo = await API.User.GetUserBasic();
+            UpdateApiCallsPerMinute();
 
             playerInfo.Name = userBasicInfo.Name;
             playerInfo.ID = userBasicInfo.ID;
@@ -32,6 +49,7 @@ namespace TornSharp.Forms {
             playerInfo.Gender = userBasicInfo.Gender;
 
             ApiUserBars userBars = await API.User.GetUserBars();
+            UpdateApiCallsPerMinute();
 
             playerEnergyBar.CurrentValue = userBars.Energy.Current;
             playerEnergyBar.MaxValue = userBars.Energy.Maximum;
@@ -66,6 +84,7 @@ namespace TornSharp.Forms {
             playerLifeBar.Percentage = (int)((userBars.Life.Current * 100) / userBars.Life.Maximum);
 
             ApiUserMoney userMoney = await API.User.GetUserMoney();
+            UpdateApiCallsPerMinute();
 
             playerInfo.Money.Points = userMoney.Points;
             playerInfo.Money.Wallet = userMoney.Wallet;
@@ -80,13 +99,12 @@ namespace TornSharp.Forms {
             playerInfo.Money.CityBank.InvestRate = userMoney.CityBank.InterestRate;
             playerInfo.Money.CityBank.Profit = userMoney.CityBank.Profit;
             playerInfo.Money.CityBank.InvestDueDate = userMoney.CityBank.Until;
-
-            ApiTornTimestamp serverTimestamp = await API.Torn.GetTornTimestamp();
-
-            serverInfo.Timestamp = serverTimestamp?.Timestamp;
         }
 
         internal void LoadData() {
+            // Status Bar
+            statusBarApiCallsPerMinute.Text = $"API Calls Per Minute: {ApiCallsThisMinute}/100";
+
             // Player Groupbox
 
             labelPlayerID.Text = playerInfo.ID.ToString();
@@ -133,10 +151,15 @@ namespace TornSharp.Forms {
             timerUpdatePlayerBars.Start();
             // Start the timer that updates the time remaining for the City Bank Investment
             timerInvestmentTimeRemaining.Start();
+            // Start the timer that resets the API calls per minute counter every minute
+            timerApiCallsPerMinute.Start();
+            // Start the timer that refreshes the data every 3 seconds
+            timerRefreshData.Start();
         }
 
         private async void MainWindow_Load(object sender, EventArgs e) {
             this.Text = $"TornSharp Overview - v{ProductVersion}";
+            await OneTimeApiCalls();
             await GetBasicInfo();
             LoadData();
             StartUpdateTimers();
@@ -147,7 +170,8 @@ namespace TornSharp.Forms {
         }
 
         private async void refreshDataToolStripMenuItem_Click(object sender, EventArgs e) {
-           await GetBasicInfo();
+            await GetBasicInfo();
+            LoadData();
         }
 
         private void timerInvestmentTimeRemaining_Tick(object sender, EventArgs e) {
@@ -174,53 +198,74 @@ namespace TornSharp.Forms {
         }
 
         private void timerUpdatePlayerBars_Tick(object sender, EventArgs e) {
+
+            // Player Bars Tooltip
+            toolTip1.SetToolTip(energyBar, playerEnergyBar.SetTooltip(playerEnergyBar.Type));
+            toolTip1.SetToolTip(nerveBar, playerNerveBar.SetTooltip(playerNerveBar.Type));
+            toolTip1.SetToolTip(happyBar, playerHappyBar.SetTooltip(playerHappyBar.Type));
+            toolTip1.SetToolTip(lifeBar, playerLifeBar.SetTooltip(playerLifeBar.Type));
+
             DateTime energyBarNextIncrement = DateTime.Now.AddSeconds((int)playerEnergyBar.ReceiveIncrementInSeconds);
             TimeSpan timeUntilEnergyBarIncrement = energyBarNextIncrement - DateTime.Now;
             labelReceiveEnergyIn.Text = $"{timeUntilEnergyBarIncrement.Minutes}:{timeUntilEnergyBarIncrement.Seconds:D2}";
             playerEnergyBar.ReceiveIncrementInSeconds -= 1;
+            playerEnergyBar.FullAtSeconds -= 1;
 
             if (playerEnergyBar.ReceiveIncrementInSeconds <= 0) {
                 playerEnergyBar.ReceiveIncrementInSeconds = playerEnergyBar.IncrementCooldownSeconds;
                 playerEnergyBar.CurrentValue += playerEnergyBar.Increment;
                 labelEnergyCounter.Text = $"{playerEnergyBar.CurrentValue}/{playerEnergyBar.MaxValue}";
-                energyBar.Value = PlayerBarsFunctions.UpdateBarPercentage(playerEnergyBar);
+                energyBar.Value = playerEnergyBar.GetBarPercentage();
             }
 
             DateTime nerveBarNextIncrement = DateTime.Now.AddSeconds((int)playerNerveBar.ReceiveIncrementInSeconds);
             TimeSpan timeUntilNerveBarIncrement = nerveBarNextIncrement - DateTime.Now;
             labelReceiveNerveIn.Text = $"{timeUntilNerveBarIncrement.Minutes}:{timeUntilNerveBarIncrement.Seconds:D2}";
             playerNerveBar.ReceiveIncrementInSeconds -= 1;
+            playerNerveBar.FullAtSeconds -= 1;
 
             if (playerNerveBar.ReceiveIncrementInSeconds <= 0) {
                 playerNerveBar.ReceiveIncrementInSeconds = playerNerveBar.IncrementCooldownSeconds;
                 playerNerveBar.CurrentValue += playerNerveBar.Increment;
                 labelNerveCounter.Text = $"{playerNerveBar.CurrentValue}/{playerNerveBar.MaxValue}";
-                nerveBar.Value = PlayerBarsFunctions.UpdateBarPercentage(playerNerveBar);
+                nerveBar.Value = playerNerveBar.GetBarPercentage();
             }
 
             DateTime happyBarNextIncrement = DateTime.Now.AddSeconds((int)playerHappyBar.ReceiveIncrementInSeconds);
             TimeSpan timeUntilHappyBarIncrement = happyBarNextIncrement - DateTime.Now;
             labelReceiveHappyIn.Text = $"{timeUntilHappyBarIncrement.Minutes}:{timeUntilHappyBarIncrement.Seconds:D2}";
             playerHappyBar.ReceiveIncrementInSeconds -= 1;
+            playerHappyBar.FullAtSeconds -= 1;
 
             if (playerHappyBar.ReceiveIncrementInSeconds <= 0) {
                 playerHappyBar.ReceiveIncrementInSeconds = playerHappyBar.IncrementCooldownSeconds;
                 playerHappyBar.CurrentValue += playerHappyBar.Increment;
                 labelHappyCounter.Text = $"{playerHappyBar.CurrentValue}/{playerHappyBar.MaxValue}";
-                happyBar.Value = PlayerBarsFunctions.UpdateBarPercentage(playerHappyBar);
+                happyBar.Value = playerHappyBar.GetBarPercentage();
             }
 
             DateTime lifeBarNextIncrement = DateTime.Now.AddSeconds((int)playerLifeBar.ReceiveIncrementInSeconds);
             TimeSpan timeUntilLifeBarIncrement = lifeBarNextIncrement - DateTime.Now;
             labelReceiveLifeIn.Text = $"{timeUntilLifeBarIncrement.Minutes}:{timeUntilLifeBarIncrement.Seconds:D2}";
             playerLifeBar.ReceiveIncrementInSeconds -= 1;
+            playerLifeBar.FullAtSeconds -= 1;
 
             if (playerLifeBar.ReceiveIncrementInSeconds <= 0) {
                 playerLifeBar.ReceiveIncrementInSeconds = playerLifeBar.IncrementCooldownSeconds;
                 playerLifeBar.CurrentValue += playerLifeBar.Increment;
                 labelLifeCounter.Text = $"{playerLifeBar.CurrentValue}/{playerLifeBar.MaxValue}";
-                lifeBar.Value = PlayerBarsFunctions.UpdateBarPercentage(playerLifeBar);
+                lifeBar.Value = playerLifeBar.GetBarPercentage();
             }
+        }
+
+        private void timerApiCallsPerMinute_Tick(object sender, EventArgs e) {
+            ApiCallsThisMinute = 0;
+            statusBarApiCallsPerMinute.Text = $"API Calls Per Minute: {ApiCallsThisMinute}/100";
+        }
+
+        private async void timerRefreshData_Tick(object sender, EventArgs e) {
+            await GetBasicInfo();
+            LoadData();
         }
     }
 }

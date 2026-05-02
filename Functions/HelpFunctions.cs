@@ -30,7 +30,5 @@ namespace TornSharp.Functions {
         internal static void ThrowError(string message) {
             MessageBox.Show(message, "TornSharp Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-
     }
-
 }
