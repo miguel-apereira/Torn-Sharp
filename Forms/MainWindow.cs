@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿#pragma warning disable CS8602, CS8600, CS8629 // Dereference of a possibly null reference.
+
+using System.Globalization;
 
 using TornSharp.API.Classes;
 using TornSharp.Classes;
@@ -6,9 +8,6 @@ using TornSharp.Functions;
 
 namespace TornSharp.Forms {
     public partial class MainWindow : Form {
-        // This variable will hold the due date of the City Bank Investment, we will use it to calculate the time remaining for the investment
-        static DateTime CityBankInvestmentDueDate;
-
         static ServerInfo serverInfo = new ServerInfo();
 
         static PlayerInfo playerInfo = new PlayerInfo();
@@ -22,11 +21,7 @@ namespace TornSharp.Forms {
             InitializeComponent();
         }
 
-        internal void LoadData() {
-
-        }
-
-        internal async void GetBasicInfo() {
+        internal async Task GetBasicInfo() {
 
             ApiUserBasic userBasicInfo = await API.User.GetUserBasic();
 
@@ -35,7 +30,6 @@ namespace TornSharp.Forms {
             playerInfo.Level = userBasicInfo.Level;
             playerInfo.State = userBasicInfo.Status.State;
             playerInfo.Gender = userBasicInfo.Gender;
-
 
             ApiUserBars userBars = await API.User.GetUserBars();
 
@@ -71,15 +65,30 @@ namespace TornSharp.Forms {
             playerLifeBar.FullAtSeconds = userBars.Life.FullTime;
             playerLifeBar.Percentage = (int)((userBars.Life.Current * 100) / userBars.Life.Maximum);
 
-
             ApiUserMoney userMoney = await API.User.GetUserMoney();
 
-            ApiTornTimestamp serverTimestamp = await API.Torn.GetTornTimestamp();
-            serverInfo.Timestamp = serverTimestamp?.Timestamp;
-            timerServerTime.Start(); // Start the timer that updates the server time in the status bar
+            playerInfo.Money.Points = userMoney.Points;
+            playerInfo.Money.Wallet = userMoney.Wallet;
+            playerInfo.Money.DailyNetworth = userMoney.DailyNetworth;
+            playerInfo.Money.CaymanBank = userMoney.CaymanBank;
+            playerInfo.Money.Company = userMoney.Company;
+            playerInfo.Money.Vault = userMoney.Vault;
 
+            playerInfo.Money.CityBank.Amount = userMoney.CityBank.Amount;
+            playerInfo.Money.CityBank.InvestDuration = userMoney.CityBank.Duration;
+            playerInfo.Money.CityBank.InvestedAt = userMoney.CityBank.InvestedDate;
+            playerInfo.Money.CityBank.InvestRate = userMoney.CityBank.InterestRate;
+            playerInfo.Money.CityBank.Profit = userMoney.CityBank.Profit;
+            playerInfo.Money.CityBank.InvestDueDate = userMoney.CityBank.Until;
+
+            ApiTornTimestamp serverTimestamp = await API.Torn.GetTornTimestamp();
+
+            serverInfo.Timestamp = serverTimestamp?.Timestamp;
+        }
+
+        internal void LoadData() {
             // Player Groupbox
-            
+
             labelPlayerID.Text = playerInfo.ID.ToString();
             labelPlayerName.Text = playerInfo.Name;
             labelPlayerLevel.Text = playerInfo.Level.ToString();
@@ -98,54 +107,54 @@ namespace TornSharp.Forms {
             lifeBar.Value = (int)playerLifeBar.Percentage;
             labelLifeCounter.Text = $"{playerLifeBar.CurrentValue}/{playerLifeBar.MaxValue}";
 
-
-            labelPlayerPoints.Text = userMoney.Points.ToString();
-            labelPlayerWallet.Text = userMoney.Wallet?.ToString("C0", CultureInfo.GetCultureInfo("en-US"));
+            labelPlayerPoints.Text = playerInfo.Money.Points.ToString();
+            labelPlayerWallet.Text = playerInfo.Money.Wallet.ConvertToCurrency();
 
             // Financial Tab
 
-            labelFinancialDailyNetworth.Text = userMoney.DailyNetworth?.ToString("C0", CultureInfo.GetCultureInfo("en-US"));
-            labelFinancialWallet.Text = userMoney.Wallet?.ToString("C0", CultureInfo.GetCultureInfo("en-US"));
-            labelFinancialCaymanBank.Text = userMoney.CaymanBank?.ToString("C0", CultureInfo.GetCultureInfo("en-US"));
-            labelFinancialCompany.Text = userMoney.Company?.ToString("C0", CultureInfo.GetCultureInfo("en-US"));
-            labelFinancialHomeVault.Text = userMoney.Vault?.ToString("C0", CultureInfo.GetCultureInfo("en-US"));
+            labelFinancialDailyNetworth.Text = playerInfo.Money.DailyNetworth.ConvertToCurrency();
+            labelFinancialWallet.Text = playerInfo.Money.Wallet.ConvertToCurrency();
+            labelFinancialCaymanBank.Text = playerInfo.Money.CaymanBank.ConvertToCurrency();
+            labelFinancialCompany.Text = playerInfo.Money.Company.ConvertToCurrency();
+            labelFinancialHomeVault.Text = playerInfo.Money.Vault.ConvertToCurrency();
 
-            labelFinancialCityBankInv.Text = userMoney.CityBank.Amount?.ToString("C0", CultureInfo.GetCultureInfo("en-US"));
-            labelFinancialInvDuration.Text = $"{userMoney.CityBank.Duration?.ToString()} days";
+            labelFinancialCityBankInv.Text = playerInfo.Money.CityBank.Amount.ConvertToCurrency();
+            labelFinancialInvDuration.Text = playerInfo.Money.CityBank.InvestDuration.ToStringBankDuration();
+            labelFinancialInvAtDate.Text = playerInfo.Money.CityBank.InvestedAt.TimestampToDateTime().ToString();
+            labelFinancialInvDueDate.Text = playerInfo.Money.CityBank.InvestDueDate.TimestampToDateTime().ToString();
+            labelFinancialInvRate.Text = $"{playerInfo.Money.CityBank.InvestRate.ToString()}%";
+            labelFinancialInvProfit.Text = playerInfo.Money.CityBank.Profit.ConvertToCurrency();
+        }
 
-            DateTime citybankInvestedDate = DateTimeOffset.FromUnixTimeSeconds((long)userMoney.CityBank.InvestedDate).DateTime;
-            labelFinancialInvAtDate.Text = citybankInvestedDate.ToString();
-
-            DateTime citybankInvestmentDueDate = DateTimeOffset.FromUnixTimeSeconds((long)userMoney.CityBank.Until).DateTime;
-            labelFinancialInvDueDate.Text = citybankInvestmentDueDate.ToString();
-            CityBankInvestmentDueDate = citybankInvestmentDueDate;
-            timerInvestmentTimeRemaining.Start(); // Start the timer that updates the time remaining for the City Bank Investment
-
-            labelFinancialInvRate.Text = $"{userMoney.CityBank.InterestRate?.ToString()}%";
-            labelFinancialInvProfit.Text = userMoney.CityBank.Profit?.ToString("C0", CultureInfo.GetCultureInfo("en-US"));
-
+        internal void StartUpdateTimers() {
+            // Start the timer that updates the server time in the status bar
+            timerServerTime.Start();
+            // Start the timer that updates the player bars (energy, nerve, happy, life)
             timerUpdatePlayerBars.Start();
-
+            // Start the timer that updates the time remaining for the City Bank Investment
+            timerInvestmentTimeRemaining.Start();
         }
 
         private async void MainWindow_Load(object sender, EventArgs e) {
             this.Text = $"TornSharp Overview - v{ProductVersion}";
-            GetBasicInfo();
+            await GetBasicInfo();
+            LoadData();
+            StartUpdateTimers();
         }
 
         private void MainWindow_FormClosed(object sender, FormClosedEventArgs e) {
             Application.Exit();
         }
 
-        private void refreshDataToolStripMenuItem_Click(object sender, EventArgs e) {
-            GetBasicInfo();
+        private async void refreshDataToolStripMenuItem_Click(object sender, EventArgs e) {
+           await GetBasicInfo();
         }
 
         private void timerInvestmentTimeRemaining_Tick(object sender, EventArgs e) {
             // This Timer Updates the Time Remaining for the City Bank Investment every second, it calculates the time remaining by
             // subtracting the current time from the investment due date
 
-            TimeSpan timeRemaining = CityBankInvestmentDueDate - DateTime.Now;
+            TimeSpan timeRemaining = playerInfo.Money.CityBank.InvestDueDate.TimestampToDateTime() - DateTime.Now;
             if (timeRemaining.Ticks < 0) {
                 labelFinancialInvTimeRemaining.Text = "Investment has matured.";
             }
