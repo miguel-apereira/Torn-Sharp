@@ -6,11 +6,10 @@ using TornSharp.Functions;
 
 namespace TornSharp.Forms {
     public partial class MainWindow : Form {
-        // This variable will hold the initial server timestamp we get from the API, we will use it
-        // to calculate the server time withoutmaking an API call every second
-        static long ServerTimestamp;
         // This variable will hold the due date of the City Bank Investment, we will use it to calculate the time remaining for the investment
         static DateTime CityBankInvestmentDueDate;
+
+        static ServerInfo serverInfo = new ServerInfo();
 
         static PlayerInfo playerInfo = new PlayerInfo();
 
@@ -76,7 +75,7 @@ namespace TornSharp.Forms {
             ApiUserMoney userMoney = await API.User.GetUserMoney();
 
             ApiTornTimestamp serverTimestamp = await API.Torn.GetTornTimestamp();
-            ServerTimestamp = (long)serverTimestamp.Timestamp;
+            serverInfo.Timestamp = serverTimestamp?.Timestamp;
             timerServerTime.Start(); // Start the timer that updates the server time in the status bar
 
             // Player Groupbox
@@ -159,10 +158,10 @@ namespace TornSharp.Forms {
             // This Timer Updates the Server Time in the Status Bar every second, it uses the initial timestamp we got from the API
             // and adds 1 second to it every tick, this way we don't have to make an API call every second to get the server time
 
-            DateTime serverTime = DateTimeOffset.FromUnixTimeSeconds(ServerTimestamp).DateTime;
+            DateTime serverTime = DateTimeOffset.FromUnixTimeSeconds((int)serverInfo.Timestamp).DateTime;
             string ServerTime = serverTime.ToString("dd/MM/yyyy - HH:mm:ss");
             statusBarServerTime.Text = $"Server Time: {ServerTime}";
-            ServerTimestamp += 1;
+            serverInfo.Timestamp += 1;
         }
 
         private void timerUpdatePlayerBars_Tick(object sender, EventArgs e) {
