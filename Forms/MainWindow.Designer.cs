@@ -23,6 +23,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            components = new System.ComponentModel.Container();
             labelPlayerName = new Label();
             groupBox1 = new GroupBox();
             labelPlayerWallet = new Label();
@@ -63,25 +64,27 @@
             groupBox3 = new GroupBox();
             tableLayoutPanel1 = new TableLayoutPanel();
             labelFinancialInvProfit = new Label();
-            label17 = new Label();
-            label16 = new Label();
-            labelFinancialInvDueDate = new Label();
             label12 = new Label();
-            label15 = new Label();
             labelFinancialCityBankInv = new Label();
-            labelFinancialInvAtDate = new Label();
+            label17 = new Label();
             label13 = new Label();
-            label14 = new Label();
             labelFinancialInvDuration = new Label();
+            label14 = new Label();
+            labelFinancialInvAtDate = new Label();
+            label15 = new Label();
+            labelFinancialInvDueDate = new Label();
+            label18 = new Label();
+            label16 = new Label();
             labelFinancialInvRate = new Label();
+            labelFinancialInvTimeRemaining = new Label();
             groupBox2 = new GroupBox();
             labelFinancialWallet = new Label();
             tabPage2 = new TabPage();
             menuStrip1 = new MenuStrip();
             overviewToolStripMenuItem = new ToolStripMenuItem();
             refreshDataToolStripMenuItem = new ToolStripMenuItem();
-            label18 = new Label();
-            labelFinancialInvTimeRemaining = new Label();
+            timerInvestmentTimeRemaining = new System.Windows.Forms.Timer(components);
+            toolTip1 = new ToolTip(components);
             groupBox1.SuspendLayout();
             tabControl1.SuspendLayout();
             financialTab.SuspendLayout();
@@ -152,6 +155,7 @@
             labelPlayerWallet.Size = new Size(36, 17);
             labelPlayerWallet.TabIndex = 25;
             labelPlayerWallet.Text = "0000";
+            toolTip1.SetToolTip(labelPlayerWallet, "Warning: This money is not safe from being mugged!");
             // 
             // label11
             // 
@@ -188,7 +192,7 @@
             // labelLifeCounter
             // 
             labelLifeCounter.AutoSize = true;
-            labelLifeCounter.Location = new Point(577, 71);
+            labelLifeCounter.Location = new Point(687, 71);
             labelLifeCounter.Margin = new Padding(2, 0, 2, 0);
             labelLifeCounter.Name = "labelLifeCounter";
             labelLifeCounter.Size = new Size(27, 17);
@@ -198,7 +202,7 @@
             // labelHappyCounter
             // 
             labelHappyCounter.AutoSize = true;
-            labelHappyCounter.Location = new Point(416, 71);
+            labelHappyCounter.Location = new Point(509, 71);
             labelHappyCounter.Margin = new Padding(2, 0, 2, 0);
             labelHappyCounter.Name = "labelHappyCounter";
             labelHappyCounter.Size = new Size(27, 17);
@@ -208,7 +212,7 @@
             // labelNerveCounter
             // 
             labelNerveCounter.AutoSize = true;
-            labelNerveCounter.Location = new Point(235, 71);
+            labelNerveCounter.Location = new Point(328, 71);
             labelNerveCounter.Margin = new Padding(2, 0, 2, 0);
             labelNerveCounter.Name = "labelNerveCounter";
             labelNerveCounter.Size = new Size(27, 17);
@@ -218,7 +222,7 @@
             // labelEnergyCounter
             // 
             labelEnergyCounter.AutoSize = true;
-            labelEnergyCounter.Location = new Point(61, 71);
+            labelEnergyCounter.Location = new Point(154, 71);
             labelEnergyCounter.Margin = new Padding(2, 0, 2, 0);
             labelEnergyCounter.Name = "labelEnergyCounter";
             labelEnergyCounter.Size = new Size(27, 17);
@@ -540,7 +544,7 @@
             groupBox3.Controls.Add(tableLayoutPanel1);
             groupBox3.Location = new Point(6, 88);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(388, 388);
+            groupBox3.Size = new Size(388, 181);
             groupBox3.TabIndex = 1;
             groupBox3.TabStop = false;
             groupBox3.Text = "City Bank";
@@ -567,15 +571,15 @@
             tableLayoutPanel1.Location = new Point(6, 24);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 8;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 36F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
-            tableLayoutPanel1.RowStyles.Add(new RowStyle());
-            tableLayoutPanel1.Size = new Size(376, 358);
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 29F));
+            tableLayoutPanel1.Size = new Size(376, 148);
             tableLayoutPanel1.TabIndex = 4;
             // 
             // labelFinancialInvProfit
@@ -583,44 +587,12 @@
             labelFinancialInvProfit.AutoSize = true;
             labelFinancialInvProfit.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             labelFinancialInvProfit.ForeColor = Color.ForestGreen;
-            labelFinancialInvProfit.Location = new Point(190, 115);
+            labelFinancialInvProfit.Location = new Point(190, 121);
             labelFinancialInvProfit.Margin = new Padding(2, 0, 2, 0);
             labelFinancialInvProfit.Name = "labelFinancialInvProfit";
             labelFinancialInvProfit.Size = new Size(15, 17);
             labelFinancialInvProfit.TabIndex = 34;
             labelFinancialInvProfit.Text = "0";
-            // 
-            // label17
-            // 
-            label17.AutoSize = true;
-            label17.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
-            label17.Location = new Point(2, 115);
-            label17.Margin = new Padding(2, 0, 2, 0);
-            label17.Name = "label17";
-            label17.Size = new Size(44, 17);
-            label17.TabIndex = 33;
-            label17.Text = "Profit:";
-            // 
-            // label16
-            // 
-            label16.AutoSize = true;
-            label16.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
-            label16.Location = new Point(2, 81);
-            label16.Margin = new Padding(2, 0, 2, 0);
-            label16.Name = "label16";
-            label16.Size = new Size(89, 17);
-            label16.TabIndex = 32;
-            label16.Text = "Interest Rate:";
-            // 
-            // labelFinancialInvDueDate
-            // 
-            labelFinancialInvDueDate.AutoSize = true;
-            labelFinancialInvDueDate.Location = new Point(190, 64);
-            labelFinancialInvDueDate.Margin = new Padding(2, 0, 2, 0);
-            labelFinancialInvDueDate.Name = "labelFinancialInvDueDate";
-            labelFinancialInvDueDate.Size = new Size(15, 17);
-            labelFinancialInvDueDate.TabIndex = 32;
-            labelFinancialInvDueDate.Text = "0";
             // 
             // label12
             // 
@@ -633,17 +605,6 @@
             label12.TabIndex = 26;
             label12.Text = "Amount Invested:";
             // 
-            // label15
-            // 
-            label15.AutoSize = true;
-            label15.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
-            label15.Location = new Point(2, 64);
-            label15.Margin = new Padding(2, 0, 2, 0);
-            label15.Name = "label15";
-            label15.Size = new Size(67, 17);
-            label15.TabIndex = 31;
-            label15.Text = "Due Date:";
-            // 
             // labelFinancialCityBankInv
             // 
             labelFinancialCityBankInv.AutoSize = true;
@@ -654,57 +615,121 @@
             labelFinancialCityBankInv.TabIndex = 26;
             labelFinancialCityBankInv.Text = "0";
             // 
-            // labelFinancialInvAtDate
+            // label17
             // 
-            labelFinancialInvAtDate.AutoSize = true;
-            labelFinancialInvAtDate.Location = new Point(190, 47);
-            labelFinancialInvAtDate.Margin = new Padding(2, 0, 2, 0);
-            labelFinancialInvAtDate.Name = "labelFinancialInvAtDate";
-            labelFinancialInvAtDate.Size = new Size(15, 17);
-            labelFinancialInvAtDate.TabIndex = 30;
-            labelFinancialInvAtDate.Text = "0";
+            label17.AutoSize = true;
+            label17.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
+            label17.Location = new Point(2, 121);
+            label17.Margin = new Padding(2, 0, 2, 0);
+            label17.Name = "label17";
+            label17.Size = new Size(44, 17);
+            label17.TabIndex = 33;
+            label17.Text = "Profit:";
             // 
             // label13
             // 
             label13.AutoSize = true;
             label13.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
-            label13.Location = new Point(2, 30);
+            label13.Location = new Point(2, 36);
             label13.Margin = new Padding(2, 0, 2, 0);
             label13.Name = "label13";
             label13.Size = new Size(137, 17);
             label13.TabIndex = 27;
             label13.Text = "Investment Duration:";
             // 
-            // label14
-            // 
-            label14.AutoSize = true;
-            label14.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
-            label14.Location = new Point(2, 47);
-            label14.Margin = new Padding(2, 0, 2, 0);
-            label14.Name = "label14";
-            label14.Size = new Size(81, 17);
-            label14.TabIndex = 29;
-            label14.Text = "Invested At:";
-            // 
             // labelFinancialInvDuration
             // 
             labelFinancialInvDuration.AutoSize = true;
-            labelFinancialInvDuration.Location = new Point(190, 30);
+            labelFinancialInvDuration.Location = new Point(190, 36);
             labelFinancialInvDuration.Margin = new Padding(2, 0, 2, 0);
             labelFinancialInvDuration.Name = "labelFinancialInvDuration";
             labelFinancialInvDuration.Size = new Size(15, 17);
             labelFinancialInvDuration.TabIndex = 28;
             labelFinancialInvDuration.Text = "0";
             // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
+            label14.Location = new Point(2, 53);
+            label14.Margin = new Padding(2, 0, 2, 0);
+            label14.Name = "label14";
+            label14.Size = new Size(81, 17);
+            label14.TabIndex = 29;
+            label14.Text = "Invested At:";
+            // 
+            // labelFinancialInvAtDate
+            // 
+            labelFinancialInvAtDate.AutoSize = true;
+            labelFinancialInvAtDate.Location = new Point(190, 53);
+            labelFinancialInvAtDate.Margin = new Padding(2, 0, 2, 0);
+            labelFinancialInvAtDate.Name = "labelFinancialInvAtDate";
+            labelFinancialInvAtDate.Size = new Size(15, 17);
+            labelFinancialInvAtDate.TabIndex = 30;
+            labelFinancialInvAtDate.Text = "0";
+            // 
+            // label15
+            // 
+            label15.AutoSize = true;
+            label15.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
+            label15.Location = new Point(2, 70);
+            label15.Margin = new Padding(2, 0, 2, 0);
+            label15.Name = "label15";
+            label15.Size = new Size(67, 17);
+            label15.TabIndex = 31;
+            label15.Text = "Due Date:";
+            // 
+            // labelFinancialInvDueDate
+            // 
+            labelFinancialInvDueDate.AutoSize = true;
+            labelFinancialInvDueDate.Location = new Point(190, 70);
+            labelFinancialInvDueDate.Margin = new Padding(2, 0, 2, 0);
+            labelFinancialInvDueDate.Name = "labelFinancialInvDueDate";
+            labelFinancialInvDueDate.Size = new Size(15, 17);
+            labelFinancialInvDueDate.TabIndex = 32;
+            labelFinancialInvDueDate.Text = "0";
+            // 
+            // label18
+            // 
+            label18.AutoSize = true;
+            label18.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
+            label18.Location = new Point(2, 104);
+            label18.Margin = new Padding(2, 0, 2, 0);
+            label18.Name = "label18";
+            label18.Size = new Size(108, 17);
+            label18.TabIndex = 35;
+            label18.Text = "Time Remaining:";
+            // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
+            label16.Location = new Point(2, 87);
+            label16.Margin = new Padding(2, 0, 2, 0);
+            label16.Name = "label16";
+            label16.Size = new Size(89, 17);
+            label16.TabIndex = 32;
+            label16.Text = "Interest Rate:";
+            // 
             // labelFinancialInvRate
             // 
             labelFinancialInvRate.AutoSize = true;
-            labelFinancialInvRate.Location = new Point(190, 81);
+            labelFinancialInvRate.Location = new Point(190, 87);
             labelFinancialInvRate.Margin = new Padding(2, 0, 2, 0);
             labelFinancialInvRate.Name = "labelFinancialInvRate";
             labelFinancialInvRate.Size = new Size(15, 17);
             labelFinancialInvRate.TabIndex = 33;
             labelFinancialInvRate.Text = "0";
+            // 
+            // labelFinancialInvTimeRemaining
+            // 
+            labelFinancialInvTimeRemaining.AutoSize = true;
+            labelFinancialInvTimeRemaining.Location = new Point(190, 104);
+            labelFinancialInvTimeRemaining.Margin = new Padding(2, 0, 2, 0);
+            labelFinancialInvTimeRemaining.Name = "labelFinancialInvTimeRemaining";
+            labelFinancialInvTimeRemaining.Size = new Size(15, 17);
+            labelFinancialInvTimeRemaining.TabIndex = 36;
+            labelFinancialInvTimeRemaining.Text = "0";
             // 
             // groupBox2
             // 
@@ -763,26 +788,10 @@
             refreshDataToolStripMenuItem.Text = "Refresh Data";
             refreshDataToolStripMenuItem.Click += refreshDataToolStripMenuItem_Click;
             // 
-            // label18
+            // timerInvestmentTimeRemaining
             // 
-            label18.AutoSize = true;
-            label18.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
-            label18.Location = new Point(2, 98);
-            label18.Margin = new Padding(2, 0, 2, 0);
-            label18.Name = "label18";
-            label18.Size = new Size(108, 17);
-            label18.TabIndex = 35;
-            label18.Text = "Time Remaining:";
-            // 
-            // labelFinancialInvTimeRemaining
-            // 
-            labelFinancialInvTimeRemaining.AutoSize = true;
-            labelFinancialInvTimeRemaining.Location = new Point(190, 98);
-            labelFinancialInvTimeRemaining.Margin = new Padding(2, 0, 2, 0);
-            labelFinancialInvTimeRemaining.Name = "labelFinancialInvTimeRemaining";
-            labelFinancialInvTimeRemaining.Size = new Size(15, 17);
-            labelFinancialInvTimeRemaining.TabIndex = 36;
-            labelFinancialInvTimeRemaining.Text = "0";
+            timerInvestmentTimeRemaining.Interval = 1000;
+            timerInvestmentTimeRemaining.Tick += timerInvestmentTimeRemaining_Tick;
             // 
             // MainWindow
             // 
@@ -887,5 +896,7 @@
         private ToolStripMenuItem refreshDataToolStripMenuItem;
         private Label label18;
         private Label labelFinancialInvTimeRemaining;
+        private System.Windows.Forms.Timer timerInvestmentTimeRemaining;
+        private ToolTip toolTip1;
     }
 }

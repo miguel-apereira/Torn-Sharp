@@ -13,6 +13,7 @@ using TornSharp.API.Classes;
 
 namespace TornSharp.Forms {
     public partial class MainWindow : Form {
+        static DateTime CityBankInvestmentDueDate;
         public MainWindow() {
             InitializeComponent();
         }
@@ -59,6 +60,8 @@ namespace TornSharp.Forms {
 
             DateTime citybankInvestmentDueDate = DateTimeOffset.FromUnixTimeSeconds((long)userMoney.CityBank.Until).DateTime;
             labelFinancialInvDueDate.Text = citybankInvestmentDueDate.ToString();
+            CityBankInvestmentDueDate = citybankInvestmentDueDate;
+            timerInvestmentTimeRemaining.Start();
 
             labelFinancialInvRate.Text = $"{userMoney.CityBank.InterestRate?.ToString()}%";
             labelFinancialInvProfit.Text = userMoney.CityBank.Profit?.ToString("C0", CultureInfo.GetCultureInfo("en-US"));
@@ -76,6 +79,15 @@ namespace TornSharp.Forms {
 
         private void refreshDataToolStripMenuItem_Click(object sender, EventArgs e) {
             GetBasicInfo();
+        }
+
+        private void timerInvestmentTimeRemaining_Tick(object sender, EventArgs e) {
+            TimeSpan timeRemaining = CityBankInvestmentDueDate - DateTime.Now;
+            if (timeRemaining.Ticks < 0) {
+                labelFinancialInvTimeRemaining.Text = "Investment has matured.";
+            } else {
+                labelFinancialInvTimeRemaining.Text = $"{timeRemaining.Days}d, {timeRemaining.Hours}h {timeRemaining.Minutes}m {timeRemaining.Seconds}s";
+            }
         }
     }
 }
