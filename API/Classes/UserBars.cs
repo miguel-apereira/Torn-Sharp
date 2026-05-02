@@ -23,23 +23,55 @@ namespace TornSharp.API.Classes {
         public int? Current { get; set; }
         [JsonProperty("maximum")]
         public int? Maximum { get; set; }
+        [JsonProperty("increment")]
+        public int? Increment { get; set; }
+        [JsonProperty("interval")]
+        public int? Interval { get; set; }
+        [JsonProperty("tick_time")]
+        public int? TickTime { get; set; }
+        [JsonProperty("full_time")]
+        public int? FullTime { get; set; }
     }
     public class ApiUserBarsNerve {
         [JsonProperty("current")]
         public int? Current { get; set; }
         [JsonProperty("maximum")]
         public int? Maximum { get; set; }
+        [JsonProperty("increment")]
+        public int? Increment { get; set; }
+        [JsonProperty("interval")]
+        public int? Interval { get; set; }
+        [JsonProperty("tick_time")]
+        public int? TickTime { get; set; }
+        [JsonProperty("full_time")]
+        public int? FullTime { get; set; }
     }
     public class ApiUserBarsHappy {
         [JsonProperty("current")]
         public int? Current { get; set; }
         [JsonProperty("maximum")]
         public int? Maximum { get; set; }
+        [JsonProperty("increment")]
+        public int? Increment { get; set; }
+        [JsonProperty("interval")]
+        public int? Interval { get; set; }
+        [JsonProperty("tick_time")]
+        public int? TickTime { get; set; }
+        [JsonProperty("full_time")]
+        public int? FullTime { get; set; }
     }
     public class ApiUserBarsLife {
         [JsonProperty("current")]
         public int? Current { get; set; }
         [JsonProperty("maximum")]
         public int? Maximum { get; set; }
+        [JsonProperty("increment")]
+        public int? Increment { get; set; }
+        [JsonProperty("interval")]
+        public int? Interval { get; set; }
+        [JsonProperty("tick_time")]
+        public int? TickTime { get; set; }
+        [JsonProperty("full_time")]
+        public int? FullTime { get; set; }
     }
 }
