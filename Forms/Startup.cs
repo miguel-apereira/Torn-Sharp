@@ -10,7 +10,7 @@ namespace TornSharp {
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-            HelpFunctions.OpenBrowserURL("https://www.torn.com/preferences.php#tab=api");
+            Functions.HelpFunctions.OpenBrowserURL("https://www.torn.com/preferences.php#tab=api");
         }
 
         private async void button1_Click(object sender, EventArgs e) {

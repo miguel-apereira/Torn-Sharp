@@ -26,6 +26,7 @@
             components = new System.ComponentModel.Container();
             labelPlayerName = new Label();
             groupBox1 = new GroupBox();
+            labelReceiveEnergyIn = new Label();
             labelPlayerWallet = new Label();
             label11 = new Label();
             labelPlayerPoints = new Label();
@@ -85,6 +86,13 @@
             refreshDataToolStripMenuItem = new ToolStripMenuItem();
             timerInvestmentTimeRemaining = new System.Windows.Forms.Timer(components);
             toolTip1 = new ToolTip(components);
+            timerServerTime = new System.Windows.Forms.Timer(components);
+            statusStrip1 = new StatusStrip();
+            statusBarServerTime = new ToolStripStatusLabel();
+            timerUpdatePlayerBars = new System.Windows.Forms.Timer(components);
+            labelReceiveNerveIn = new Label();
+            labelReceiveHappyIn = new Label();
+            labelReceiveLifeIn = new Label();
             groupBox1.SuspendLayout();
             tabControl1.SuspendLayout();
             financialTab.SuspendLayout();
@@ -96,6 +104,7 @@
             tableLayoutPanel1.SuspendLayout();
             groupBox2.SuspendLayout();
             menuStrip1.SuspendLayout();
+            statusStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // labelPlayerName
@@ -111,6 +120,10 @@
             // groupBox1
             // 
             groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox1.Controls.Add(labelReceiveLifeIn);
+            groupBox1.Controls.Add(labelReceiveHappyIn);
+            groupBox1.Controls.Add(labelReceiveNerveIn);
+            groupBox1.Controls.Add(labelReceiveEnergyIn);
             groupBox1.Controls.Add(labelPlayerWallet);
             groupBox1.Controls.Add(label11);
             groupBox1.Controls.Add(labelPlayerPoints);
@@ -145,6 +158,15 @@
             groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
             groupBox1.Text = "Player Profile";
+            // 
+            // labelReceiveEnergyIn
+            // 
+            labelReceiveEnergyIn.AutoSize = true;
+            labelReceiveEnergyIn.Location = new Point(142, 71);
+            labelReceiveEnergyIn.Name = "labelReceiveEnergyIn";
+            labelReceiveEnergyIn.Size = new Size(39, 17);
+            labelReceiveEnergyIn.TabIndex = 26;
+            labelReceiveEnergyIn.Text = "00:00";
             // 
             // labelPlayerWallet
             // 
@@ -192,7 +214,7 @@
             // labelLifeCounter
             // 
             labelLifeCounter.AutoSize = true;
-            labelLifeCounter.Location = new Point(687, 71);
+            labelLifeCounter.Location = new Point(594, 71);
             labelLifeCounter.Margin = new Padding(2, 0, 2, 0);
             labelLifeCounter.Name = "labelLifeCounter";
             labelLifeCounter.Size = new Size(27, 17);
@@ -202,7 +224,7 @@
             // labelHappyCounter
             // 
             labelHappyCounter.AutoSize = true;
-            labelHappyCounter.Location = new Point(509, 71);
+            labelHappyCounter.Location = new Point(416, 71);
             labelHappyCounter.Margin = new Padding(2, 0, 2, 0);
             labelHappyCounter.Name = "labelHappyCounter";
             labelHappyCounter.Size = new Size(27, 17);
@@ -212,7 +234,7 @@
             // labelNerveCounter
             // 
             labelNerveCounter.AutoSize = true;
-            labelNerveCounter.Location = new Point(328, 71);
+            labelNerveCounter.Location = new Point(235, 71);
             labelNerveCounter.Margin = new Padding(2, 0, 2, 0);
             labelNerveCounter.Name = "labelNerveCounter";
             labelNerveCounter.Size = new Size(27, 17);
@@ -222,7 +244,7 @@
             // labelEnergyCounter
             // 
             labelEnergyCounter.AutoSize = true;
-            labelEnergyCounter.Location = new Point(154, 71);
+            labelEnergyCounter.Location = new Point(61, 71);
             labelEnergyCounter.Margin = new Padding(2, 0, 2, 0);
             labelEnergyCounter.Name = "labelEnergyCounter";
             labelEnergyCounter.Size = new Size(27, 17);
@@ -428,7 +450,7 @@
             tabControl1.Location = new Point(11, 133);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1079, 558);
+            tabControl1.Size = new Size(1079, 545);
             tabControl1.TabIndex = 2;
             // 
             // financialTab
@@ -442,7 +464,7 @@
             financialTab.Location = new Point(4, 26);
             financialTab.Name = "financialTab";
             financialTab.Padding = new Padding(3);
-            financialTab.Size = new Size(1071, 528);
+            financialTab.Size = new Size(1071, 515);
             financialTab.TabIndex = 0;
             financialTab.Text = "Financial";
             financialTab.UseVisualStyleBackColor = true;
@@ -759,7 +781,7 @@
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(1071, 530);
+            tabPage2.Size = new Size(1071, 517);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "tabPage2";
             tabPage2.UseVisualStyleBackColor = true;
@@ -793,12 +815,65 @@
             timerInvestmentTimeRemaining.Interval = 1000;
             timerInvestmentTimeRemaining.Tick += timerInvestmentTimeRemaining_Tick;
             // 
+            // timerServerTime
+            // 
+            timerServerTime.Interval = 1000;
+            timerServerTime.Tick += timerServerTime_Tick;
+            // 
+            // statusStrip1
+            // 
+            statusStrip1.Items.AddRange(new ToolStripItem[] { statusBarServerTime });
+            statusStrip1.Location = new Point(0, 681);
+            statusStrip1.Name = "statusStrip1";
+            statusStrip1.Size = new Size(1101, 22);
+            statusStrip1.TabIndex = 4;
+            statusStrip1.Text = "statusStrip1";
+            // 
+            // statusBarServerTime
+            // 
+            statusBarServerTime.Name = "statusBarServerTime";
+            statusBarServerTime.Size = new Size(69, 17);
+            statusBarServerTime.Text = "Server Time";
+            // 
+            // timerUpdatePlayerBars
+            // 
+            timerUpdatePlayerBars.Interval = 1000;
+            timerUpdatePlayerBars.Tick += timerUpdatePlayerBars_Tick;
+            // 
+            // labelReceiveNerveIn
+            // 
+            labelReceiveNerveIn.AutoSize = true;
+            labelReceiveNerveIn.Location = new Point(316, 71);
+            labelReceiveNerveIn.Name = "labelReceiveNerveIn";
+            labelReceiveNerveIn.Size = new Size(39, 17);
+            labelReceiveNerveIn.TabIndex = 27;
+            labelReceiveNerveIn.Text = "00:00";
+            // 
+            // labelReceiveHappyIn
+            // 
+            labelReceiveHappyIn.AutoSize = true;
+            labelReceiveHappyIn.Location = new Point(497, 71);
+            labelReceiveHappyIn.Name = "labelReceiveHappyIn";
+            labelReceiveHappyIn.Size = new Size(39, 17);
+            labelReceiveHappyIn.TabIndex = 28;
+            labelReceiveHappyIn.Text = "00:00";
+            // 
+            // labelReceiveLifeIn
+            // 
+            labelReceiveLifeIn.AutoSize = true;
+            labelReceiveLifeIn.Location = new Point(675, 71);
+            labelReceiveLifeIn.Name = "labelReceiveLifeIn";
+            labelReceiveLifeIn.Size = new Size(39, 17);
+            labelReceiveLifeIn.TabIndex = 29;
+            labelReceiveLifeIn.Text = "00:00";
+            // 
             // MainWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(1101, 703);
+            Controls.Add(statusStrip1);
             Controls.Add(tabControl1);
             Controls.Add(groupBox1);
             Controls.Add(menuStrip1);
@@ -831,6 +906,8 @@
             groupBox2.PerformLayout();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -898,5 +975,13 @@
         private Label labelFinancialInvTimeRemaining;
         private System.Windows.Forms.Timer timerInvestmentTimeRemaining;
         private ToolTip toolTip1;
+        private System.Windows.Forms.Timer timerServerTime;
+        private StatusStrip statusStrip1;
+        private ToolStripStatusLabel statusBarServerTime;
+        private System.Windows.Forms.Timer timerUpdatePlayerBars;
+        private Label labelReceiveEnergyIn;
+        private Label labelReceiveNerveIn;
+        private Label labelReceiveLifeIn;
+        private Label labelReceiveHappyIn;
     }
 }
